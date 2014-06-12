@@ -1,0 +1,31 @@
+{
+  "name": "npm-registry-history",
+  "version": "0.0.0",
+  "description": "Keep a historical record of each update sequence from the skim registry and store it in a leveldb instance by seq",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/nodejitsu/npm-registry-history"
+  },
+  "keywords": [
+    "npm",
+    "registry",
+    "history",
+    "leveldb"
+  ],
+  "author": "Jarrett Cruger <jcrugzz@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodejitsu/npm-registry-history/issues"
+  },
+  "homepage": "https://github.com/nodejitsu/npm-registry-history",
+  "dependencies": {
+    "changes-stream": "~1.0.5",
+    "level": "~0.18.0",
+    "minimist": "~0.1.0",
+    "seq-file": "~1.0.2"
+  }
+}

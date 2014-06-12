@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+var path = require('path');
+var History = require('..');
+
+var argv = require('minimist')(process.argv.slice(2));
+
+var opts = {
+  db: argv.db,
+  seq: argv.seq
+};
+
+var H = new History(opts)
+  .on('error', function (err) {
+    console.log('ERROR', err);
+    process.exit(1);
+  })
+  .on('change', function (change) {
+    console.log('CHANGE %d: %s', change.seq, change.id);
+  })
+  .on('retry', function () {
+    console.log('RETRY: attempting to reconnect');
+  })
