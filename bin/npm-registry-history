@@ -6,8 +6,8 @@ var History = require('..');
 var argv = require('minimist')(process.argv.slice(2));
 
 var opts = {
-  db: argv.db,
-  seq: argv.seq
+  db: argv.db && path.resolve(argv.db),
+  seq: argv.seq && path.resolve(argv.seq)
 };
 
 var H = new History(opts)
