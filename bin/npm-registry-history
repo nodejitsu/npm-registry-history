@@ -10,6 +10,10 @@ var opts = {
   seq: argv.seq && path.resolve(process.cwd(), argv.seq)
 };
 
+if (argv.config || argv.c) {
+  opts = require(path.resolve(process.cwd(), argv.c || argv.config));
+}
+
 var H = new History(opts)
   .on('error', function (err) {
     console.log('ERROR', err);
