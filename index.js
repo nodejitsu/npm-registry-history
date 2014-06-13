@@ -1,10 +1,11 @@
 var url = require('url');
 var util = require('util');
 var path = require('path');
+var net = require('net');
 var Transform = require('stream').Transform;
 var SeqFile = require('seq-file');
 var Changes = require('changes-stream');
-var level = require('level');
+var multilevel = require('multilevel');
 
 var extend = util._extend;
 
@@ -20,13 +21,24 @@ function History (options) {
 
   this.couch = options.couch || 'https://skimdb.npmjs.com/registry';
 
-  this.db = level(options.db || path.join(__dirname, 'sequence.db'),
-                  { valueEncoding: 'json' });
+  this.db = this.connect(options.db);
 
   this.seq = new SeqFile(options.seq || path.join(__dirname, 'sequence.seq'));
 
   this.seq.read(this.start.bind(this));
 }
+
+History.prototype.connect = function (options) {
+  options = options || {};
+  options.port = options.port || 3000;
+
+  var db = multilevel.client();
+  this.con = net.connect(options);
+  this.con.on('error', this.emit.bind(this, 'error'));
+  this.con.pipe(db.createRpcStream()).pipe(this.con);
+
+  return db;
+};
 
 History.prototype.start = function (err, seq) {
 
@@ -39,6 +51,7 @@ History.prototype.start = function (err, seq) {
     inactivity_ms: 60 * 60 * 1000
   })
   .on('error', this.emit.bind(this, 'error'))
+  .on('heartbeat', this.emit.bind(this, 'heartbeat'))
   .on('retry', this.emit.bind(this, 'retry'));
 
   this.changes.pipe(this)

@@ -8,6 +8,7 @@ logs
 # other things
 *.db
 *.seq
+.lev*
 
 # Runtime data
 pids

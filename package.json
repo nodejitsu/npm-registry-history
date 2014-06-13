@@ -29,6 +29,7 @@
     "changes-stream": "~1.0.5",
     "level": "~0.18.0",
     "minimist": "~0.1.0",
+    "multilevel": "~6.0.0",
     "seq-file": "~1.0.2"
   }
 }

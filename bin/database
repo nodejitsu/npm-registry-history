@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+var net = require('net');
+var path = require('path');
+var multilevel = require('multilevel');
+var level = require('../level');
+
+var argv = require('minimist')(process.argv.slice(2));
+
+var dbPath = argv.path && path.resolve(process.cwd(), argv.path)
+
+var db = level(dbPath, { valueEncoding: 'json' });
+
+var server = net.createServer(function (socket) {
+  socket.on('error', function (err) {
+    console.error(err);
+  });
+  socket.pipe(multilevel.server(db)).pipe(socket);
+
+});
+
+server.listen(3000);
