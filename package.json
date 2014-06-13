@@ -1,6 +1,6 @@
 {
   "name": "npm-registry-history",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Keep a historical record of each update sequence from the skim registry and store it in a leveldb instance by seq",
   "main": "index.js",
   "scripts": {
