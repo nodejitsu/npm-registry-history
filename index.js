@@ -38,11 +38,15 @@ History.prototype.start = function (err, seq) {
     include_docs: true,
     inactivity_ms: 60 * 60 * 1000
   })
+  .on('error', this.emit.bind(this, 'error'))
+  .on('retry', this.emit.bind(this, 'retry'));
 
-  this.changes
-    .on('retry', this.emit.bind(this, 'retry'))
-    .on('error', this.emit.bind(this, 'error'))
-    .pipe(this);
+  this.changes.pipe(this)
+    .on('data', this.log.bind(this));
+};
+
+History.prototype.log = function (change) {
+  this.emit('put', change);
 };
 
 History.prototype._transform = function(change, enc, callback) {
